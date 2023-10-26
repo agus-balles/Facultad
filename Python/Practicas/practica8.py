@@ -1,5 +1,11 @@
 from queue import LifoQueue as Pila
+from queue import Queue as Cola
 import random
+
+def printColaOrPila(fifoLifo):
+    while (not fifoLifo.empty()):
+        print(fifoLifo.get())
+
 #1)
 #a
 def contarLineas(archivo: str) -> int:
@@ -70,8 +76,7 @@ def generar_nros_al_azar(n:int ,desde:int,hasta:int):
     for i in range(n):
         p.put(random.randint(desde,hasta))
    
-    while (not p.empty()):
-        print(p.get())
+    return p
 #9)
 def cantidad_elementos(p:Pila)->int:
     pila2:Pila = Pila()
@@ -127,4 +132,137 @@ def postfix(s:str):
                 pila1.put(num1 * num2)
             elif(elemento == "/"):
                 pila1.put(num1 / num2)
+
+#13)
+def colaAlAzar(cantidadDeNumeros:int,desde:int,hasta:int)->None:
+    cola:Cola = Cola()
+    numerosAlAzar = generar_nros_al_azar(cantidadDeNumeros,desde,hasta)
+    while (not numerosAlAzar.empty()):
+        cola.put(numerosAlAzar.get())
+    return cola
+
+#14)
+def cantidadElementos(cola:Cola)->int:
+    colaCopy: Cola = Cola()
+    elems:int = 0
+    while (not cola.empty()):
+        colaCopy.put(cola.get())
+        elems +=1
+    while (not colaCopy.empty()):
+        cola.put(colaCopy.get())
+    return elems
+
+#15)
+def buscarElMaximo(cola:Cola)->int:
+    colaCopy:Cola = Cola()
+    max = cola.get()
+    colaCopy.put(max)
+    while (not cola.empty()):
+        num = cola.get()
+        colaCopy.put(num)
+        if (num >= max):
+            max = num
+    return max
+
+#16)
+def secuenciaBingo()->Cola[int]:
+    numeros:[int] = []
+    cola:Cola = Cola()
+    for i in range(100):
+        numeros.append(i)
+    random.shuffle(numeros)
+    for numero in numeros:
+        cola.put(numero)
+    return cola
+
+#def jugarBingo(carton:[int],bolillero:Cola[int])->int:
+#Como se juega al bingo???
+
+#17)
+def pacientesUrgentes(cola:Cola[(int,str,str)])->int:
+    pacientesUrgentes:int = 0
+    while (not cola.empty()):
+        if (cola.get()[0] <= 3):
+            pacientesUrgentes +=1
+    return pacientesUrgentes
+
+#18)
+def aClientes(cola:Cola[(str, int, bool, bool)]) -> Cola[(str, int, bool, bool)]:
+    prioridad:Cola=Cola()
+    preferencial:Cola= Cola()
+    normal:Cola = Cola()
+    colaCompleta:Cola = Cola()
+    while (not cola.empty()):
+        persona:(str, int, bool, bool)=cola.get()
+        if (persona[3]):
+            prioridad.put(persona)
+        elif (persona[2]):
+            preferencial.put(persona)
+        else:
+            normal.put(persona)
+    while (not prioridad.empty()):
+        colaCompleta.put(prioridad.get())
+    while (not preferencial.empty()):
+        colaCompleta.put(preferencial.get())
+    while (not normal.empty()):
+        colaCompleta.put(normal.get())
+    return colaCompleta
+
+#19)
+def agruparPorLongitud(archivo:str)->dict:
+    buffer = open(archivo,"r")
+    diccionario:dict ={}
+    palabras:[str] = buffer.read().split()
+    for palabra in palabras:
+        lenght = len(palabra)
+        if lenght in diccionario:
+            diccionario[lenght] +=1
+        else:
+            diccionario[lenght] =1
+    return diccionario
+#21)
+def palabraMasFrequente(archivo:str)->str:
+    buffer = open(archivo,"r")
+    diccionario:dict ={}
+    palabras:[str] = buffer.read().split()
+    for palabra in palabras:
+        if palabra in diccionario:
+            diccionario[palabra] +=1
+        else:
+            diccionario[palabra]= 1
+    max:str = list(diccionario.keys())[0]
+    for key in diccionario:
+        if diccionario[key]>diccionario[max]:
+            max =key
     
+    return max
+
+#22)
+def visitarSitio(historiales:{str:Pila},usuario:str,sitio:str):
+    historiales[usuario].put(sitio)
+
+def navegarAtras(historiales:{str:Pila},usuario:str):
+    global cachedSite
+    cachedSite = historiales[usuario].get()
+
+def navegarAdelante(historiales:{str:Pila},usuario:str):
+    historiales[usuario].put(cachedSite)
+
+
+#23)
+inventario:{str:dict} = {}
+
+def agregarProducto(inventario:dict,nombre:str,precio:int,cantidad:int):
+    inventario[nombre]={"precio":precio,"cantidad":cantidad}
+
+def actualizarStock(inventario:dict,nombre:str,cantidad:int):
+    inventario[nombre]["cantidad"]=cantidad
+
+def actualizarPrecios(inventario:dict,nombre:str,precio:int):
+    inventario[nombre]["precio"]=precio
+
+def calcularValorInventario(inventario:dict)->int:
+    ValorTotal:int = 0
+    for item in inventario:
+        ValorTotal += item["cantidad"] * item["precio"] 
+    return ValorTotal
