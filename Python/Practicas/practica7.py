@@ -1,3 +1,5 @@
+import numpy
+
 def pertenece(lista:[int],x:int):
     for i in lista:
         if(x==i): return True
@@ -12,7 +14,7 @@ def divideATodos(lista:[int],x:int):
     return True
 
 def ordenados(lista:[int]) -> bool:
-    for i in range(len(lista)):
+    for i in range(len(lista)-1):
         if(lista[i] <= lista[i+1]):
             continue
         else:
@@ -125,3 +127,39 @@ def estudiantes()-> [str]:
         entrada = input("ingrese nombre de estudiante: ")
     return listaEstudiantes
 
+#5)
+def perteneceACadaUno(listas:[[int]],num:int,res:bool):
+    for lista in listas:
+        if num in lista:
+            continue
+        else:
+            return False
+    return True
+
+def esMatriz(listas:[[int]])->bool:
+    if len(listas==0): return False
+    for i in range(len(listas)):
+        if len(listas[i]) == len(listas[i+1]):
+            continue
+        else:
+            return False 
+    return True
+
+def filasOrdenadas(listas:[[int]])->[bool]:
+    for lista in listas:
+        if ordenados(lista):
+            continue
+        else:
+            return False
+    return True
+
+def matriz_al_azar_potencia(d, p):
+    # Genera una matriz cuadrada aleatoria de tamaño d
+    matriz = numpy.random.rand(d, d)
+
+    # Realiza la multiplicación de la matriz por sí misma p veces
+    resultado = matriz
+    for _ in range(p - 1):
+        resultado = numpy.dot(resultado, matriz)
+
+    return resultado
