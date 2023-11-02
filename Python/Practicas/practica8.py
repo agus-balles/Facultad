@@ -134,7 +134,7 @@ def postfix(s:str):
                 pila1.put(num1 / num2)
 
 #13)
-def colaAlAzar(cantidadDeNumeros:int,desde:int,hasta:int)->None:
+def colaAlAzar(cantidadDeNumeros:int,desde:int,hasta:int):
     cola:Cola = Cola()
     numerosAlAzar = generar_nros_al_azar(cantidadDeNumeros,desde,hasta)
     while (not numerosAlAzar.empty()):
